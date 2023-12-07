@@ -19,10 +19,10 @@ https://plugins.jetbrains.com/plugin/7282-liveplugin
 
 ![image](https://github.com/xqdd/jumpserver-datagrip-client/assets/20871761/6aa7f327-dc29-498b-a6b7-57841bbd82f2)
 
-## 5. run at startup
+## 5. boot script and config run at startup
 
+![image](https://github.com/xqdd/jumpserver-datagrip-client/assets/20871761/47858472-9284-42bb-b0bc-c34a33129608)
 ![image](https://github.com/xqdd/jumpserver-datagrip-client/assets/20871761/238b25d3-31b4-4964-ba6c-94c618f3aead)
-
 
 ## 6. trigger client connection at web gui
 
