@@ -1,6 +1,6 @@
 # jumpserver-datagrip-client
 
-## 1. build client binary
+## 1. build client binary(skip it if you are windows, just [downlaod builded binary](https://github.com/xqdd/jumpserver-datagrip-client/releases))
 
 > need kotlin+gradle
 
