@@ -17,7 +17,7 @@ val maxRetries = 3
 
 fun main(args: Array<String>) {
     runBlocking {
-        for (i in 1..maxRetries) {
+        for (i in 0..maxRetries) {
             run(args, 63342 + i)
         }
     }
