@@ -73,7 +73,7 @@ handlers.registerExtension(service)
 fun add(paramMap: Map<String, String>) {
     val proj = ProjectManager.getInstance().openProjects[0]
     val dm = DataSourceManager.getManagers(proj)[0] as LocalDataSourceManager
-    val dbname = paramMap["name"]?.split("[")!![0]
+    val dbname = paramMap["name"]?.split("[")!![0].split("@")!![1]
     val user = paramMap["user"]!!
     val password = paramMap["password"]?.toCharArray()!!
 
@@ -95,6 +95,7 @@ fun add(paramMap: Map<String, String>) {
     ds.resolveDriver()
     setPass(ds, password)
     ds.isAutoSynchronize = true
+    ds.isGlobal = true
     ds.schemaMapping.introspectionScope = TreePatternUtils.parse(false, "*:*")
     dm.addDataSource(ds)
     DataSourceUtil.performAutoSyncTask(proj, ds)
