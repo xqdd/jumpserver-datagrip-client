@@ -1,11 +1,11 @@
-val ktor_version = "2.3.6"
+val ktor_version = "3.3.1"
 
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "2.2.20"
 }
 
-group = "me.10324"
-version = "1.0-SNAPSHOT"
+group = "com.xqdd"
+version = "2.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -36,6 +36,7 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-core:$ktor_version")
                 implementation("io.ktor:ktor-client-winhttp:$ktor_version")
+//                implementation("io.ktor:ktor-client-curl:${ktor_version}")
             }
         }
         val nativeTest by getting

@@ -16,6 +16,7 @@ import liveplugin.show
 import org.jetbrains.ide.RestService
 import org.jsoup.internal.StringUtil
 import java.util.regex.Pattern
+import org.jetbrains.ide.BuiltInServerManager
 
 // depends-on-plugin com.intellij.database
 
@@ -59,12 +60,16 @@ val service = object : RestService() {
     }
 }
 
+// 获取并打印当前端口
+val port = BuiltInServerManager.getInstance().port
+show("db plugin is running on port: $port")
+
 val handlers: ExtensionPointImpl<Any> =
     (ApplicationManager.getApplication().extensionArea.getExtensionPoint<Any>("com.intellij.httpRequestHandler")) as ExtensionPointImpl<Any>
 
 handlers.findExtensions(Any::class.java).forEach {
     if (it.javaClass.name.startsWith("Plugin\$")) {
-        show("unregisterExtension: " + it.javaClass.name)
+        // show("unregisterExtension: " + it.javaClass.name)
         handlers.unregisterExtension(it)
     }
 }
@@ -79,6 +84,7 @@ fun add(paramMap: Map<String, String>) {
 
     dm.dataSources.forEach {
         if (it.name == dbname) {
+            it.connectionProperties.setProperty("characterSetResults","NULL")
             it.username = user
             setPass(it, password)
             show("updated: " + dbname)
@@ -95,8 +101,9 @@ fun add(paramMap: Map<String, String>) {
     ds.resolveDriver()
     setPass(ds, password)
     ds.isAutoSynchronize = true
-    ds.isGlobal = true
+//    ds.isGlobal = true
     ds.schemaMapping.introspectionScope = TreePatternUtils.parse(false, "*:*")
+    ds.connectionProperties.setProperty("characterSetResults","NULL")
     dm.addDataSource(ds)
     DataSourceUtil.performAutoSyncTask(proj, ds)
     show("added: " + dbname)
