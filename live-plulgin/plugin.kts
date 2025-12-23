@@ -2,8 +2,10 @@ import com.intellij.credentialStore.OneTimeString
 import com.intellij.database.model.DasDataSource
 import com.intellij.database.model.RawDataSource
 import com.intellij.database.psi.DataSourceManager
+import com.intellij.ide.plugins.PluginManagerCore
 import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.extensions.impl.ExtensionPointImpl
+import com.intellij.openapi.extensions.PluginId
 import com.intellij.openapi.project.ProjectManager
 import io.netty.channel.ChannelHandlerContext
 import io.netty.handler.codec.http.FullHttpRequest
@@ -74,6 +76,7 @@ handlers.findExtensions(Any::class.java).forEach {
 handlers.registerExtension(service)
 
 fun add(paramMap: Map<String, String>) {
+    warmupDatabaseTools()
     val proj = ProjectManager.getInstance().openProjects[0]
     val dm = findLocalDataSourceManager(proj)
     val dbname = paramMap["name"]?.split("[")!![0].split("@")!![1]
@@ -147,6 +150,18 @@ fun setPass(ds: Any, password: CharArray) {
     }
     // Fallback for older APIs that allow setting password directly.
     call(ds, "setPassword", String(password))
+}
+
+fun warmupDatabaseTools() {
+    val plugin = PluginManagerCore.getPlugin(PluginId.getId("com.intellij.database")) ?: return
+    val cl = plugin.classLoader
+    listOf(
+        "com.intellij.database.dataSource.LocalDataSource",
+        "com.intellij.database.dataSource.LocalDataSourceManager",
+        "com.intellij.database.access.DatabaseCredentials",
+        "com.intellij.database.util.DataSourceUtil",
+        "com.intellij.database.util.TreePatternUtils"
+    ).forEach { Class.forName(it, true, cl) }
 }
 
 fun findLocalDataSourceManager(project: Any): DataSourceManager<*> {
