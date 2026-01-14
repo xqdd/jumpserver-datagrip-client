@@ -106,6 +106,7 @@ fun add(paramMap: Map<String, String>) {
     }
     call(ds, "resolveDriver")
     setPass(ds, password)
+    call(ds, "setGlobal", true)
     call(ds, "setAutoSynchronize", true) ?: call(ds, "setAutoSynchronize", java.lang.Boolean.TRUE)
     val schemaMapping = call(ds, "getSchemaMapping")
     val scope = parseTreePattern("*:*")
